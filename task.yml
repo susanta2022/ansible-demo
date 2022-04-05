@@ -1,0 +1,9 @@
+--- # install httpd server using ansible
+- hosts: demo
+  user: ansadmin
+  become: yes
+  connection: ssh
+  gather_facts: yes
+  tasks:
+        - name: Install HTTPD on centos 7
+          action: yum name=httpd state=present
