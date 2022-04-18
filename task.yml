@@ -1,64 +1,9 @@
---- # dfg
-- hosts: 127.0.0.1
+--- # install httpd server using ansible
+- hosts: demo
+  user: ansadmin
+  become: yes
   connection: ssh
-
-  vars:
-    user_name: susanta
-    group: devops
-    passphrase: Riju@8100006942
-    user_email: mail2susantasadhukhan@gmail.com
-
+  gather_facts: yes
   tasks:
-       - name: create a password for user {{user_name}}
-         shell: python -c 'import crypt,getpass; print(crypt.crypt(getpass.getpass(), crypt.mksalt(crypt.METHOD_SHA512)))'
-         register: password
-           
-
-       - name: set passsword
-         set_fact: passwd='{{password.stdout}}'
-
-       - name: set user {{user_name}} as a global variable
-         set_fact: user_name='{{user_name}}'
-
-       - name: set group {{group}} as a global variable
-         set_fact: group='{{group}}'
-
-       - name: set passphrase {{passphrase}} as a global variable
-         set_fact: passphrase='{{passphrase}}' 
-
-       - name: set user email  {{user_email}} as a global variable
-         set_fact: email='{{user_email}}'     
-
-       - debug:
-           msg: '{{passwd}}'
-           
-        
-       - name: create a directory for ssh user {{user_name}}
-         file:
-           path: ~/.ssh/{{group}}/{{user_name}}
-           state: directory
-
-       - name: create a ssh key for user {{user_name}}
-         openssh_keypair:
-            path: "~/.ssh/{{group}}/{{user_name}}/id_{{user_name}}"
-            type: rsa
-            size: 4096
-            state: present
-            force: no
-
-
-       - name: encrypt private key for user {{user_name}}
-         command: openssl rsa -in ~/.ssh/{{group}}/{{user_name}}/id_{{user_name}} -out ~/.ssh/{{group}}/{{user_name}}/id_{{user_name}}.pem       
-         register: encrypt_private
-
-       - debug:
-          msg: "{{encrypt_private}}"
-
-
-       - name: Convert private key for user {{user_name}} to PKCS8 format with passphrase
-         community.crypto.openssl_privatekey_convert:
-            src_path: ~/.ssh/{{group}}/{{user_name}}/id_{{user_name}}.pem
-            dest_path: ~/.ssh/{{group}}/{{user_name}}/id_{{user_name}}.key
-            dest_passphrase: '{{passphrase}}'
-            format: pkcs8    
- 
+        - name: Install HTTPD on centos 7
+          action: yum name=httpd state=present
