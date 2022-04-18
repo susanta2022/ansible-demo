@@ -1,5 +1,5 @@
 --- # install httpd server using ansible
-- hosts: demo
+- hosts: 127.0.0.1
   user: ansadmin
   become: yes
   connection: ssh
