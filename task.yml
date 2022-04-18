@@ -13,7 +13,7 @@
 
   tasks:
        - name: create a password for user {{user_name}}
-         shell: python3 -c 'import crypt,getpass; print(crypt.crypt(getpass.getpass(), crypt.mksalt(crypt.METHOD_SHA512)))'
+         shell: python -c 'import crypt,getpass; print(crypt.crypt(getpass.getpass(), crypt.mksalt(crypt.METHOD_SHA512)))'
          register: password
            
 
