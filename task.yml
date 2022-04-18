@@ -1,20 +1,9 @@
 --- # install httpd server using ansible
-- hosts: 127.0.0.1
-  #user: ansadmin
+- hosts: demo
+  user: ansadmin
   become: yes
   connection: ssh
   gather_facts: yes
-  
-  vars:
-    user_name: devops
-    group: office
-    passphrase: Riju@8100006942
-    user_email: mail2susantasadhukhan@gmail.com
-
   tasks:
-       - name: create a password for user {{user_name}}
-         shell: python -c 'import crypt,getpass; print(crypt.crypt(getpass.getpass('admin'), crypt.mksalt(crypt.METHOD_SHA512)))'
-         register: password
-           
-
-     
+        - name: Install HTTPD on centos 7
+          action: yum name=httpd state=present
